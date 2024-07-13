@@ -1,0 +1,139 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model file {
+  id   String @id(map: "PK_36b46d232307066b3a2c9ea3a1d") @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  path String @db.VarChar
+  user user?
+}
+
+model migrations {
+  id        Int    @id(map: "PK_8c82d7f526340ab734260ea46be") @default(autoincrement())
+  timestamp BigInt
+  name      String @db.VarChar
+}
+
+model role {
+  id   Int    @id(map: "PK_b36bcfe02fc8de3c57a8b2391c2")
+  name String @db.VarChar
+  user user[]
+}
+
+model session {
+  id        Int       @id(map: "PK_f55da76ac1c3ac420f444d2ff11") @default(autoincrement())
+  hash      String    @db.VarChar
+  createdAt DateTime  @default(now()) @db.Timestamp(6)
+  updatedAt DateTime  @default(now()) @db.Timestamp(6)
+  deletedAt DateTime? @db.Timestamp(6)
+  userId    Int?
+  user      user?     @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "FK_3d2f174ef04fb312fdebd0ddc53")
+
+  @@index([userId], map: "IDX_3d2f174ef04fb312fdebd0ddc5")
+}
+
+model status {
+  id   Int    @id(map: "PK_e12743a7086ec826733f54e1d95")
+  name String @db.VarChar
+  user user[]
+}
+
+model user {
+  id        Int       @id(map: "PK_cace4a159ff9f2512dd42373760") @default(autoincrement())
+  email     String?   @unique(map: "UQ_e12875dfb3b1d92d7d7c5377e22") @db.VarChar
+  password  String?   @db.VarChar
+  provider  String    @default("email") @db.VarChar
+  socialId  String?   @db.VarChar
+  firstName String?   @db.VarChar
+  lastName  String?   @db.VarChar
+  createdAt DateTime  @default(now()) @db.Timestamp(6)
+  updatedAt DateTime  @default(now()) @db.Timestamp(6)
+  deletedAt DateTime? @db.Timestamp(6)
+  photoId   String?   @unique(map: "REL_75e2be4ce11d447ef43be0e374") @db.Uuid
+  roleId    Int?
+  statusId  Int?
+  session   session[]
+  file      file?     @relation(fields: [photoId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "FK_75e2be4ce11d447ef43be0e374f")
+  role      role?     @relation(fields: [roleId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "FK_c28e52f758e7bbc53828db92194")
+  status    status?   @relation(fields: [statusId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "FK_dc18daa696860586ba4667a9d31")
+
+  @@index([firstName], map: "IDX_58e4dbff0e1a32a9bdc861bb29")
+  @@index([socialId], map: "IDX_9bd2fe7a8e694dedc4ec2f666f")
+  @@index([lastName], map: "IDX_f0e1b4ecdca13b177e2e3a0613")
+}
+
+model Slot {
+  slot       BigInt   @id
+  parent     BigInt?
+  status     Int
+  updated_at DateTime @default(now()) @db.Timestamp(6)
+
+  @@map("slot")
+}
+
+model BlockMeta {
+  slot                       BigInt   @id
+  blockhash                  String
+  rewards                    Json?
+  block_time                 DateTime
+  block_height               BigInt
+  parent_slot                BigInt
+  parent_blockhash           String
+  executed_transaction_count Int
+  entries_count              Int
+
+  @@map("block")
+}
+
+model Account {
+  id            Int      @id @default(autoincrement())
+  pubkey        String   @unique @db.VarChar
+  lamport       BigInt
+  slot          BigInt
+  executable    Boolean
+  rent_epoch    String?  @db.VarChar
+  data          Json?    @db.JsonB
+  write_version BigInt
+  updated_at    DateTime @default(now()) @db.Timestamp
+  txn_signature Json?    @db.JsonB
+  owner         Json?    @db.JsonB
+
+  @@index([owner], map: "account_owner")
+  @@index([slot], map: "account_slot")
+  @@map("account")
+}
+
+model AccountAudit {
+  id            Int      @id @default(autoincrement())
+  pubkey        String   @unique @db.VarChar
+  lamport       BigInt
+  slot          BigInt
+  executable    Boolean
+  rent_epoch    String?  @db.VarChar
+  data          Json?    @db.JsonB
+  write_version BigInt
+  updated_at    DateTime @default(now()) @db.Timestamp
+  txn_signature Json?    @db.JsonB
+  owner         Json?    @db.JsonB
+
+  @@index([owner], map: "account_audit_owner")
+  @@index([slot], map: "account_audit_slot")
+  @@map("account_audit")
+}
+
+model Transaction {
+  signature   String  @id @db.VarChar
+  slot        BigInt
+  is_vote     Boolean
+  index       Int
+  transaction Json?   @db.JsonB
+  meta        Json?   @db.JsonB
+
+  @@index([slot], map: "transaction_slot")
+  @@map("transaction")
+}

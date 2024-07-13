@@ -1,0 +1,36 @@
+{
+  "title": "Blocks",
+  "table": {
+    "column1": "slot",
+    "column2": "blockhash",
+    "column3": "parent_slot",
+    "column4": "block_time"
+  },
+  "actions": {
+    "add": "Add User",
+    "edit": "Edit",
+    "delete": "Delete",
+    "create": "Create User"
+  },
+  "confirm": {
+    "delete": {
+      "title": "Delete User",
+      "message": "Are you sure you want to delete this user?"
+    }
+  },
+  "filter": {
+    "actions": {
+      "filter": "Filter",
+      "apply": "Apply"
+    },
+    "inputs": {
+      "role": {
+        "label": "Role",
+        "options": {
+          "1": "Admin",
+          "2": "User"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "app-name": "Solarch",
+  "loading": "Loading ...",
+  "navigation": {
+    "home": "Home",
+    "signIn": "Sign In",
+    "signUp": "Sign Up",
+    "profile": "Profile",
+    "users": "Users",
+    "slots": "Slots",
+    "blocks": "Blocks",
+    "transactions": "Transactions",
+    "accounts": "Accounts",
+    "slot": "Slot",
+    "block": "Block",
+    "transaction": "Transaction",
+    "account": "Account",
+    "logout": "Logout"
+  },
+  "formInputs": {
+    "avatarInput": {
+      "dropzoneText": "Drop the image here ...",
+      "dragAndDrop": "Or drag 'n' drop some files here",
+      "selectFile": "Select an image"
+    }
+  },
+  "leavePage": {
+    "title": "Leave this page?",
+    "message": "Changes you made may not be saved",
+    "stay": "Stay on Page",
+    "leave": "Leave Page"
+  },
+  "auth": {
+    "facebook": {
+      "action": "Login with Facebook"
+    }
+  }
+}
