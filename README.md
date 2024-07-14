@@ -1,4 +1,4 @@
-### Solana Indexer
+# Solana Indexer
 
 This is a Solana Indexer that listens to the Solana blockchain and indexes all the transactions and accounts. It is built using Solana's Geyser Plugin, Node.js, Kafka, and Postgres. Geyser is a Solana program that listens to the Solana blockchain and emits events for every transaction and account change. The Solana Indexer listens to these events and indexes them in a Postgres database.
 
