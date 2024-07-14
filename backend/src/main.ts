@@ -55,7 +55,7 @@ async function bootstrap() {
     { inheritAppConfig: true },
   );
 
-  // await app.startAllMicroservices();
+  await app.startAllMicroservices();
   await app.listen(configService.getOrThrow('app.port', { infer: true }));
 }
 void bootstrap();
