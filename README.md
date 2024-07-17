@@ -26,7 +26,7 @@ This is a Solana Indexer that listens to the Solana blockchain and indexes all t
 4. Run additional container:
 
    ```bash
-   docker compose up -d postgres adminer maildev
+   docker compose up -d
    ```
 
 5. Install dependency
